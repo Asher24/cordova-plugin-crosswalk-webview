@@ -176,14 +176,14 @@ cdvPluginPostBuildExtras.add({
         } else {
             directory = outputDir.get().asFile
         }
-        println('outputDir')
-        println(mergeTask.outputDir.toString())
         println('asFile')
-        println(mergeTask.outputDir.get().asFile.toString())
+        println(directory.toString())
         def outFile = new File (directory.toString(), "xwalk-command-line")
-        def newTask = project.task("createXwalkCommandLineFile${variantName}") << {
-            directory.mkdirs()
-            outFile.write("xwalk ${xwalkCommandLine}\n")
+        def newTask = project.task("createXwalkCommandLineFile${variantName}") {
+            doLast {
+                directory.mkdirs()
+                outFile.write("xwalk ${xwalkCommandLine}\n")
+            }
         }
         newTask.dependsOn(mergeTask)
         processTask.dependsOn(newTask)
